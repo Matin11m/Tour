@@ -165,7 +165,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='tour',
             name='city',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='tours', to='Tour.city'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='reports', to='Tour.city'),
         ),
         migrations.CreateModel(
             name='Comment',

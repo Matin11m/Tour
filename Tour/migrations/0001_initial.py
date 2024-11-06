@@ -41,8 +41,8 @@ class Migration(migrations.Migration):
                 ('required_documents', models.TextField()),
                 ('tour_rules', models.TextField()),
                 ('passenger_comments', models.TextField()),
-                ('image', models.ImageField(upload_to='images/')),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='tours', to='Tour.category')),
+                ('image', models.ImageField(upload_to='tour_images/')),
+                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reports', to='Tour.category')),
             ],
         ),
         migrations.CreateModel(
@@ -73,8 +73,8 @@ class Migration(migrations.Migration):
             name='TourImage',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('image', models.ImageField(upload_to='tours/images/')),
-                ('tour', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='Tour.tour')),
+                ('image', models.ImageField(upload_to='reports/tour_images/')),
+                ('tour', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='tour_images', to='Tour.tour')),
             ],
         ),
         migrations.CreateModel(
