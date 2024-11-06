@@ -42,7 +42,7 @@
 #
 # class TourSerializer(serializers.ModelSerializer):
 #     category = CategorySerializer()
-#     images = TourImageSerializer(many=True, read_only=True)
+#     tour_images = TourImageSerializer(many=True, read_only=True)
 #     reports = TourReportSerializer(many=True, read_only=True)
 #     buy_forms = BuyFormSerializer(many=True, read_only=True)
 #     reservations = ReservationSerializer(many=True, read_only=True)
@@ -53,13 +53,13 @@
 #         model = Tour
 #         fields = ['id', 'name', 'accommodation', 'tour_type', 'duration', 'food', 'travel_month', 'time_period',
 #                   'capacity', 'price', 'accommodation_details', 'tour_services', 'tour_report', 'required_documents',
-#                   'tour_rules', 'passenger_comments', 'image', 'category', 'images', 'reports', 'buy_forms',
+#                   'tour_rules', 'passenger_comments', 'image', 'category', 'tour_images', 'reports', 'buy_forms',
 #                   'reservations', 'is_favorite']
 #
 #     def create(self, validated_data):
 #         category_data = validated_data.pop('category')
 #         reports_data = self.context['request'].data.get('reports', [])
-#         image_data = self.context['request'].data.get('images', [])
+#         image_data = self.context['request'].data.get('tour_images', [])
 #
 #         category, created = Category.objects.get_or_create(name=category_data['name'])
 #         tour = Tour.objects.create(category=category, **validated_data)
