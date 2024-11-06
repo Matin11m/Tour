@@ -38,7 +38,7 @@ class City(models.Model):
 class Category(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(default="No description provided.")
-    image = models.ImageField(upload_to='images_category/')
+    image = models.ImageField(upload_to='images_category/', default="default.jpg")
 
     def __str__(self):
         return self.title
