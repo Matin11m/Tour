@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import ImageField
 
 
 class UserProfile(models.Model):
@@ -37,22 +38,44 @@ class City(models.Model):
 class Category(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(default="No description provided.")
+    image = models.ImageField(upload_to='images_category/')
 
     def __str__(self):
         return self.title
 
 
 class Tour(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='tours')
-    city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='tours', null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='reports')
+    city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='reports', null=True, blank=True)
     title = models.CharField(max_length=100)
     description = models.TextField(default="No description provided.")
-    transport = models.CharField(max_length=100, blank=True, null=True)
     stay = models.CharField(max_length=100, blank=True, null=True)
     details = models.TextField(default="No additional details provided.")
+    tour_rules = models.CharField(max_length=400, blank=True, null=True)
+    Required_documents = models.CharField(max_length=400, blank=True, null=True)
+    Tour_services = models.CharField(max_length=400, blank=True, null=True)
+    image = models.ImageField(upload_to='tour/', default='default.jpg')
 
     def __str__(self):
         return self.title
+
+
+class TourImage(models.Model):
+    tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='tour_images')
+    image = models.ImageField(upload_to='tour_images/', blank=True, null=True)
+
+    def __str__(self):
+        return self.tour
+
+
+class TourReport(models.Model):
+    tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='reports')
+    day = models.IntegerField()
+    report = models.TextField()
+    image = ImageField(upload_to='reports/', null=True, blank=True)
+
+    def __str__(self):
+        return self.report
 
 
 class Trip(models.Model):
@@ -60,6 +83,9 @@ class Trip(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     discount_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     capacity = models.PositiveIntegerField()
+    duration = models.CharField(max_length=100, blank=True, null=True)
+    stay = models.CharField(max_length=100, blank=True, null=True)
+    trip_type = models.CharField(max_length=100, blank=True, null=True)
     start_date = models.DateField()
     end_date = models.DateField()
     meal = models.CharField(max_length=100, blank=True, null=True)
@@ -142,14 +168,32 @@ class Refund(models.Model):
 
 class Banner(models.Model):
     title = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='banners/')
-    link = models.URLField(max_length=200)
+    image = models.ImageField(upload_to='header_banner/')
+    link = models.URLField(max_length=200, blank=True, null=True)
+
     start_date = models.DateField()
     end_date = models.DateField()
 
     def __str__(self):
         return self.title
 
+
+class FirstBanner(models.Model):
+    title = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='First_banners/')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='first_banners')
+
+    def __str__(self):
+        return self.title
+
+
+class CityBanner(models.Model):
+    title = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='City_banners/')
+    city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='first_banners')
+
+    def __str__(self):
+        return self.title
 # class Tour(models.Model):
 # name = models.CharField(max_length=255)
 # accommodation = models.CharField(max_length=255)
@@ -166,10 +210,10 @@ class Banner(models.Model):
 # required_documents = models.TextField()
 # tour_rules = models.TextField()
 # passenger_comments = models.TextField()
-# image = models.ImageField(upload_to='images/')
+# image = models.ImageField(upload_to='tour_images/')
 #
-# category = models.ForeignKey(Category, related_name='tours', on_delete=models.CASCADE)
-# city = models.ForeignKey(Cities, related_name='tours', on_delete=models.CASCADE)
+# category = models.ForeignKey(Category, related_name='reports', on_delete=models.CASCADE)
+# city = models.ForeignKey(Cities, related_name='reports', on_delete=models.CASCADE)
 #
 # def __str__(self):
 #     return self.name
@@ -182,7 +226,23 @@ class Banner(models.Model):
 #     def __str__(self):
 #         return f"{self.user.username}'s Profile"
 
-
+# class BuyForm(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='buy_forms')
+#     first_name = models.CharField(max_length=100)
+#     last_name = models.CharField(max_length=100)
+#     national_id = models.CharField(max_length=10)
+#     birth_date = models.DateField()
+#     gender = models.CharField(max_length=10, choices=[('Male', 'Male'), ('Female', 'Female')])
+#     tour = models.ForeignKey('Tour', related_name='buy_forms', on_delete=models.CASCADE, null=True, blank=True)
+#     created_at = models.DateTimeField(default=timezone.now)
+#
+#     def __str__(self):
+#         return f'{self.first_name} {self.last_name}'
+#
+#     def save(self, *args, **kwargs):
+#         super().save(*args, **kwargs)
+#         if self.tour:
+#             Reservation.objects.create(user=self.user, tour=self.tour, status='Pending')
 # class Category(models.Model):
 #     name = models.CharField(max_length=100)
 #
@@ -213,8 +273,8 @@ class Banner(models.Model):
 #
 #
 # class TourImage(models.Model):
-#     tour = models.ForeignKey(Tour, related_name='images', on_delete=models.CASCADE)
-#     image = models.ImageField(upload_to='tours/images/')
+#     tour = models.ForeignKey(Tour, related_name='tour_images', on_delete=models.CASCADE)
+#     image = models.ImageField(upload_to='reports/tour_images/')
 #
 #     def __str__(self):
 #         return f"Image for {self.tour.name}"
