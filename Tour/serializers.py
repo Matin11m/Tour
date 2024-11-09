@@ -118,7 +118,15 @@ from .models import UserProfile, Province, City, Category, Tour, Trip, Favorite,
 from django.contrib.auth.models import User
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email']
+
+
 class UserProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)  # نمایش اطلاعات کاربر به صورت تودرتو
+
     class Meta:
         model = UserProfile
         fields = '__all__'
@@ -131,6 +139,8 @@ class ProvinceSerializer(serializers.ModelSerializer):
 
 
 class CitiesSerializer(serializers.ModelSerializer):
+    province = ProvinceSerializer(read_only=True)  # نمایش جزئیات استان مربوطه
+
     class Meta:
         model = City
         fields = '__all__'
@@ -143,48 +153,71 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class TourSerializer(serializers.ModelSerializer):
+    category = CategorySerializer(read_only=True)  # نمایش دسته‌بندی مرتبط
+    city = CitiesSerializer(read_only=True)  # نمایش شهر مرتبط
+
     class Meta:
         model = Tour
         fields = '__all__'
 
 
 class TripSerializer(serializers.ModelSerializer):
+    tour = TourSerializer(read_only=True)  # نمایش تور مرتبط
+
     class Meta:
         model = Trip
         fields = '__all__'
 
 
 class FavoritesSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)  # نمایش اطلاعات کاربر مرتبط
+    tour = TourSerializer(read_only=True)  # نمایش تور مورد علاقه
+
     class Meta:
         model = Favorite
         fields = '__all__'
 
 
 class CommentsSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)  # نمایش اطلاعات کاربر
+    tour = TourSerializer(read_only=True)  # نمایش تور مرتبط
+
     class Meta:
         model = Comment
         fields = '__all__'
 
 
 class PassengersSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)  # نمایش کاربر مرتبط
+
     class Meta:
         model = Passenger
         fields = '__all__'
 
 
 class OrderSerializer(serializers.ModelSerializer):
+    passenger = PassengersSerializer(read_only=True)  # نمایش اطلاعات مسافر
+    user = UserSerializer(read_only=True)  # نمایش اطلاعات کاربر
+    trip = TripSerializer(read_only=True)  # نمایش جزئیات سفر
+
     class Meta:
         model = Order
         fields = '__all__'
 
 
 class TransactionsSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)  # نمایش کاربر مرتبط
+    order = OrderSerializer(read_only=True)  # نمایش اطلاعات سفارش
+
     class Meta:
         model = Transaction
         fields = '__all__'
 
 
 class RefundSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)  # نمایش کاربر مرتبط
+    order = OrderSerializer(read_only=True)  # نمایش سفارش مرتبط
+
     class Meta:
         model = Refund
         fields = '__all__'
