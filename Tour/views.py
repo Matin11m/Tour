@@ -126,10 +126,11 @@
 
 from rest_framework import viewsets
 from .models import UserProfile, Province, City, Category, Tour, Trip, Favorite, Comment, Passenger, Order, \
-    Transaction, Refund, Banner
+    Transaction, Refund, Banner, FirstBanner, CityBanner
 from .serializers import UserProfileSerializer, ProvinceSerializer, CitiesSerializer, CategorySerializer, \
     TourSerializer, TripSerializer, FavoritesSerializer, CommentsSerializer, PassengersSerializer, OrderSerializer, \
     TransactionsSerializer, RefundSerializer, BannerSerializer
+
 
 class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
@@ -193,4 +194,14 @@ class RefundViewSet(viewsets.ModelViewSet):
 
 class BannerViewSet(viewsets.ModelViewSet):
     queryset = Banner.objects.all()
+    serializer_class = BannerSerializer
+
+
+class FirstBannerViewSet(viewsets.ModelViewSet):
+    queryset = FirstBanner.objects.all()
+    serializer_class = BannerSerializer
+
+
+class CityBannerViewSet(viewsets.ModelViewSet):
+    queryset = CityBanner.objects.all()
     serializer_class = BannerSerializer
