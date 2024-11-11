@@ -39,6 +39,7 @@ class Category(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(default="No description provided.")
     image = models.ImageField(upload_to='images_category/', default="default.jpg")
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='subcategories', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
