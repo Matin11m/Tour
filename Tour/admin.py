@@ -59,47 +59,68 @@ from django.contrib import admin
 from .models import (
     UserProfile, Province, City, Category, Tour,
     Trip, Favorite, Comment, Passenger, Order,
-    Transaction, Refund, Banner
+    Transaction, Refund, Banner, TourReport, TourImage
 )
+
+
+class TourImageInline(admin.TabularInline):
+    model = TourImage
+    extra = 1
+
+
+class TourReportInline(admin.TabularInline):
+    model = TourReport
+    extra = 1
+
+
+@admin.register(Tour)
+class TourAdmin(admin.ModelAdmin):
+    list_display = ('title', 'category', 'city', 'description', 'stay')
+    search_fields = ('title', 'category__title', 'city__name')
+    list_filter = ('category', 'city')
+    inlines = [TourImageInline, TourReportInline]
 
 
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'first_name', 'last_name', 'phone_number', 'national_id')
-    search_fields = ('user__username', 'first_name', 'last_name')
+    search_fields = ('user__username', 'first_name', 'last_name', 'national_id')
 
 
 @admin.register(Province)
 class ProvinceAdmin(admin.ModelAdmin):
     list_display = ('name',)
-    search_fields = ('name',)
 
 
 @admin.register(City)
 class CityAdmin(admin.ModelAdmin):
     list_display = ('name', 'province')
-    search_fields = ('name',)
+    search_fields = ('name', 'province__name')
     list_filter = ('province',)
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('title', 'description')
+    list_display = ('title', 'description', 'parent')
     search_fields = ('title',)
+    list_filter = ('parent',)
 
 
-@admin.register(Tour)
-class TourAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'city', 'description')
-    search_fields = ('title', 'description')
-    list_filter = ('category', 'city')
+@admin.register(TourImage)
+class TourImageAdmin(admin.ModelAdmin):
+    list_display = ('tour', 'image')
+
+
+@admin.register(TourReport)
+class TourReportAdmin(admin.ModelAdmin):
+    list_display = ('tour', 'day', 'report')
 
 
 @admin.register(Trip)
 class TripAdmin(admin.ModelAdmin):
-    list_display = ('tour', 'price', 'capacity', 'start_date', 'end_date')
+    list_display = ('tour', 'price', 'discount_price', 'capacity', 'start_date', 'end_date')
     search_fields = ('tour__title',)
-    list_filter = ('tour', 'start_date', 'end_date')
+    list_filter = ('start_date', 'end_date')
 
 
 @admin.register(Favorite)
@@ -112,17 +133,17 @@ class FavoriteAdmin(admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('user', 'tour', 'score', 'visibility')
     search_fields = ('user__username', 'tour__title', 'text')
+    list_filter = ('visibility',)
 
 
 @admin.register(Passenger)
 class PassengerAdmin(admin.ModelAdmin):
     list_display = ('user', 'first_name', 'last_name', 'national_id')
-    search_fields = ('first_name', 'last_name', 'national_id')
 
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('user', 'trip', 'price', 'order_status', 'payment_status')
+    list_display = ('user', 'trip', 'price', 'adults_number', 'children_number', 'order_status', 'payment_status')
     search_fields = ('user__username', 'trip__tour__title')
     list_filter = ('order_status', 'payment_status')
 
@@ -131,15 +152,16 @@ class OrderAdmin(admin.ModelAdmin):
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ('user', 'order', 'amount', 'status')
     search_fields = ('user__username', 'order__id')
+    list_filter = ('status',)
 
 
 @admin.register(Refund)
 class RefundAdmin(admin.ModelAdmin):
     list_display = ('user', 'order', 'refund_amount', 'status')
     search_fields = ('user__username', 'order__id')
+    list_filter = ('status',)
 
 
 @admin.register(Banner)
 class BannerAdmin(admin.ModelAdmin):
-    list_display = ('title', 'start_date', 'end_date')
-    search_fields = ('title',)
+    list_display = ('title',)
