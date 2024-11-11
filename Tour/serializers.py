@@ -147,14 +147,21 @@ class CitiesSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    subcategories = serializers.SerializerMethodField()
+
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ['id', 'title', 'description', 'image', 'parent', 'subcategories']
+
+    def get_subcategories(self, obj):
+        if obj.subcategories.exists():
+            return CategorySerializer(obj.subcategories.all(), many=True).data
+        return None
 
 
 class TourSerializer(serializers.ModelSerializer):
-    category = CategorySerializer(read_only=True)  # نمایش دسته‌بندی مرتبط
-    city = CitiesSerializer(read_only=True)  # نمایش شهر مرتبط
+    category = CategorySerializer(read_only=True)
+    city = CitiesSerializer(read_only=True)
 
     class Meta:
         model = Tour
@@ -227,3 +234,4 @@ class BannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Banner
         fields = '__all__'
+
