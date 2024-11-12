@@ -4,8 +4,7 @@ from django.core.management.base import BaseCommand
 from Tour.models import User, UserProfile, Province, City, Category, Tour, Trip, Favorite, Comment, Passenger, Order, \
     Transaction, Refund
 
-fake = Faker()
-
+fake = Faker('fa_IR')
 # لیست استان‌ها و شهرها
 provinces = [
     'تهران', 'فارس', 'خراسان رضوی', 'اصفهان', 'آذربایجان شرقی',
