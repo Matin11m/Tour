@@ -53,8 +53,8 @@ class Tour(models.Model):
     stay = models.CharField(max_length=100, blank=True, null=True)
     details = models.TextField(default="No additional details provided.")
     tour_rules = models.CharField(max_length=400, blank=True, null=True)
-    Required_documents = models.CharField(max_length=400, blank=True, null=True)
-    Tour_services = models.CharField(max_length=400, blank=True, null=True)
+    required_documents = models.CharField(max_length=400, blank=True, null=True)
+    tour_services = models.CharField(max_length=400, blank=True, null=True)
     image = models.ImageField(upload_to='tour/', default='default.jpg')
 
     def __str__(self):
