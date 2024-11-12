@@ -43,9 +43,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'Tour',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -146,3 +148,4 @@ SIMPLE_JWT = {
 
 KAVEHNEGAR_API_KEY = '4B62615166304E675971316967436E47616B4E47433439385772663746455671634D323775554C2B4A63593D'
 
+CORS_ALLOW_ALL_ORIGINS = True
