@@ -147,16 +147,14 @@ class CitiesSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    subcategories = serializers.SerializerMethodField()
+    parent = serializers.SerializerMethodField()
 
     class Meta:
         model = Category
-        fields = ['id', 'title', 'description', 'image', 'parent', 'subcategories']
+        fields = ['id', 'title', 'description', 'image', 'parent']
 
-    def get_subcategories(self, obj):
-        if obj.subcategories.exists():
-            return CategorySerializer(obj.subcategories.all(), many=True).data
-        return None
+    def get_parent(self, obj):
+        return obj.parent.title if obj.parent else None
 
 
 class TourSerializer(serializers.ModelSerializer):
@@ -234,4 +232,3 @@ class BannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Banner
         fields = '__all__'
-
