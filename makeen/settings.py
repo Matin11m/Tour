@@ -123,7 +123,6 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = 'static'
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -136,8 +135,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-     'DEFAULT_FILTER_BACKENDS': [
+    'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
     ],
 }
 
