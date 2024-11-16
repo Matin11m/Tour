@@ -67,7 +67,7 @@ class Command(BaseCommand):
     def create_categories(self, fake, num):
         categories = ['تورهای داخلی', 'تورهای خارجی', 'تورهای ویژه', 'تورهای طبیعت گردی']
         for category in categories:
-            Category.objects.create(title=category, description=fake.text(), image='default.jpg')
+            Category.objects.create(title=category, description=fake.text(), image=None)
 
     def create_tours_and_trips(self, fake, num):
         categories = Category.objects.all()
@@ -84,7 +84,7 @@ class Command(BaseCommand):
                     details=fake.text(),
                     tour_rules=fake.text(),
                     required_documents=fake.text(),
-                    image='default.jpg'
+                    image=None
                 )
                 self.create_trips_for_tour(tour, fake)
 
@@ -239,7 +239,7 @@ class Command(BaseCommand):
         for _ in range(5):
             Banner.objects.create(
                 title=fake.company(),
-                image='header_banner/default.jpg',  # برای تست، می‌توانید مسیر فایل‌های واقعی را جایگزین کنید.
+                image=None,  # برای تست، می‌توانید مسیر فایل‌های واقعی را جایگزین کنید.
                 link=fake.url(),
                 start_date=fake.date_this_year(),
                 end_date=fake.date_this_year()
@@ -250,7 +250,7 @@ class Command(BaseCommand):
         for category in categories:
             FirstBanner.objects.create(
                 title=fake.company(),
-                image='First_banners/default.jpg',  # مسیر تصویر فیک
+                image=None,  # مسیر تصویر فیک
                 category=category
             )
 
@@ -259,7 +259,7 @@ class Command(BaseCommand):
         for city in cities:
             CityBanner.objects.create(
                 title=fake.city(),
-                image='City_banners/default.jpg',  # مسیر تصویر فیک
+                image=None,  # مسیر تصویر فیک
                 city=city
             )
 
