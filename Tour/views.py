@@ -133,6 +133,8 @@ from .serializers import UserProfileSerializer, ProvinceSerializer, CitiesSerial
 from django.utils.decorators import method_decorator
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from Tour.filters import TourFilter
+
 
 class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
@@ -154,40 +156,10 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
 
 
-@method_decorator(
-    name='list',
-    decorator=swagger_auto_schema(
-        operation_description="لیست همه تور ها با همه فیلتر های مورد نیاز",
-        manual_parameters=[
-            openapi.Parameter(
-                'min-price',
-                openapi.IN_QUERY,
-                description="Minimum price for filtering tours",
-                type=openapi.TYPE_NUMBER
-            ),
-            openapi.Parameter(
-                'max-price',
-                openapi.IN_QUERY,
-                description="Maximum price for filtering tours",
-                type=openapi.TYPE_NUMBER
-            )
-        ]
-    )
-)
 class TourViewSet(viewsets.ModelViewSet):
     queryset = Tour.objects.all()
     serializer_class = TourSerializer
-
-    def get_queryset(self):
-        tours = super().get_queryset()
-        min_price = self.request.GET.get('min-price')
-        max_price = self.request.GET.get('max-price')
-        if min_price and max_price:
-            tours = tours.filter(
-                trips__price__lte=max_price,
-                trips__price__gte=min_price
-            )
-        return tours
+    filterset_class = TourFilter
 
 
 class TripViewSet(viewsets.ModelViewSet):
