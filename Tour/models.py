@@ -1,3 +1,5 @@
+from contextlib import nullcontext
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import ImageField
@@ -38,7 +40,7 @@ class City(models.Model):
 class Category(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(default="No description provided.")
-    image = models.ImageField(upload_to='images_category/', default="default.jpg")
+    image = models.ImageField(upload_to='images_category/', null=True, blank=True)
     parent = models.ForeignKey('self', null=True, blank=True, related_name='subcategories', on_delete=models.CASCADE)
 
     def __str__(self):
@@ -46,7 +48,7 @@ class Category(models.Model):
 
 
 class Tour(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='reports')
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name='reports')
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='reports', null=True, blank=True)
     title = models.CharField(max_length=100)
     description = models.TextField(default="No description provided.")
@@ -55,7 +57,7 @@ class Tour(models.Model):
     tour_rules = models.CharField(max_length=400, blank=True, null=True)
     required_documents = models.CharField(max_length=400, blank=True, null=True)
     tour_services = models.CharField(max_length=400, blank=True, null=True)
-    image = models.ImageField(upload_to='tour/', default='default.jpg')
+    image = models.ImageField(upload_to='tour/', null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -195,6 +197,8 @@ class CityBanner(models.Model):
 
     def __str__(self):
         return self.title
+
+
 # class Tour(models.Model):
 # name = models.CharField(max_length=255)
 # accommodation = models.CharField(max_length=255)
