@@ -133,12 +133,13 @@ from .serializers import UserProfileSerializer, ProvinceSerializer, CitiesSerial
 from django.utils.decorators import method_decorator
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
-from Tour.filters import TourFilter
+from Tour.filters import TourFilter, CommentFilter, UserFilter
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
+    filterset_class = UserFilter
 
 
 class ProvinceViewSet(viewsets.ModelViewSet):
@@ -175,6 +176,7 @@ class FavoritesViewSet(viewsets.ModelViewSet):
 class CommentsViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentsSerializer
+    filterset_class = CommentFilter
 
 
 class PassengersViewSet(viewsets.ModelViewSet):
