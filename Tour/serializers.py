@@ -114,7 +114,7 @@
 
 from rest_framework import serializers
 from .models import UserProfile, Province, City, Category, Tour, Trip, Favorite, Comment, Passenger, Order, \
-    Transaction, Refund, Banner
+    Transaction, Refund, Banner, FirstBanner, CityBanner
 from django.contrib.auth.models import User
 
 
@@ -231,4 +231,14 @@ class RefundSerializer(serializers.ModelSerializer):
 class BannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Banner
+        fields = '__all__'
+
+class FirstBannerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FirstBanner
+        fields = '__all__'
+
+class CityBannerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CityBanner
         fields = '__all__'
