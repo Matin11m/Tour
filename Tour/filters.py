@@ -1,7 +1,7 @@
 from django_filters import rest_framework as filters
 from unicodedata import category
 
-from Tour.models import Tour
+from Tour.models import Tour, Comment, UserProfile
 
 
 class TourFilter(filters.FilterSet):
@@ -29,8 +29,25 @@ class TourFilter(filters.FilterSet):
     city_filter = filters.ChoiceFilter(field_name="city__name", choices=CITY_CHOICES, label="City")
 
 
-
-
 class Meta:
     model = Tour
     fields = ['city_filter', 'city', 'min_price', 'max_price', 'category', 'start_date', 'end_date', ]
+
+
+class CommentFilter(filters.FilterSet):
+    tour_name = filters.CharFilter(field_name='tour__title', lookup_expr='icontains', label="Tour Name")
+    start_date = filters.DateFilter(field_name="tour__trips__start_date", lookup_expr='gte', label="Start Date")
+    end_date = filters.DateFilter(field_name="tour__trips__start_date", lookup_expr='lte', label="End Date")
+
+    class Meta:
+        model = Comment
+        fields = ['tour_name', 'start_date', 'end_date', ]
+
+
+class UserFilter(filters.FilterSet):
+    first_name = filters.CharFilter(lookup_expr='icontains', label="First Name")
+    last_name = filters.CharFilter(lookup_expr='icontains', label="Last Name")
+
+    class Meta:
+        model = UserProfile
+        fields = ['first_name', 'last_name']
