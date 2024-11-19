@@ -57,7 +57,7 @@
 
 from django.contrib import admin
 from .models import (
-    UserProfile, Province, City, Category, Tour,
+    UserProfile, City, Category, Tour,
     Trip, Favorite, Comment, Passenger, Order,
     Transaction, Refund, Banner, TourReport, TourImage
 )
@@ -94,9 +94,9 @@ class ProvinceAdmin(admin.ModelAdmin):
 
 @admin.register(City)
 class CityAdmin(admin.ModelAdmin):
-    list_display = ('name', 'province')
-    search_fields = ('name', 'province__name')
-    list_filter = ('province',)
+    list_display = ('name', )
+    search_fields = ('name', )
+    list_filter = ()
 
 
 @admin.register(Category)
