@@ -18,13 +18,13 @@
 
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import UserProfileViewSet, ProvinceViewSet, CitiesViewSet, CategoryViewSet, TourViewSet, TripViewSet, \
+from .views import UserProfileViewSet, CitiesViewSet, CategoryViewSet, TourViewSet, TripViewSet, \
     FavoritesViewSet, CommentsViewSet, PassengersViewSet, OrderViewSet, TransactionsViewSet, RefundViewSet, \
     BannerViewSet, FirstBannerViewSet, CityBannerViewSet
 
 router = DefaultRouter()
 router.register(r'userprofiles', UserProfileViewSet)
-router.register(r'provinces', ProvinceViewSet)
+# router.register(r'provinces', ProvinceViewSet)
 router.register(r'cities', CitiesViewSet)
 router.register(r'categories', CategoryViewSet)
 router.register(r'tours', TourViewSet)

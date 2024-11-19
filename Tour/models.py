@@ -22,19 +22,20 @@ class UserProfile(models.Model):
         return f'{self.first_name} {self.last_name}'
 
 
-class Province(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
+# class Province(models.Model):
+#     name = models.CharField(max_length=100)
+#
+#     def __str__(self):
+#         return self.name
 
 
 class City(models.Model):
     name = models.CharField(max_length=100)
-    province = models.ForeignKey(Province, on_delete=models.CASCADE, related_name='cities')
+
+    # province = models.ForeignKey(Province, on_delete=models.CASCADE, related_name='cities')
 
     def __str__(self):
-        return f'{self.name}, {self.province.name}'
+        return f'{self.name}'
 
 
 class Category(models.Model):
@@ -51,12 +52,12 @@ class Tour(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name='reports')
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='reports', null=True, blank=True)
     title = models.CharField(max_length=100)
-    description = models.TextField(default="No description provided.")
+    description = models.TextField(blank=True, null=True)
     stay = models.CharField(max_length=100, blank=True, null=True)
-    details = models.TextField(default="No additional details provided.")
-    tour_rules = models.CharField(max_length=400, blank=True, null=True)
-    required_documents = models.CharField(max_length=400, blank=True, null=True)
-    tour_services = models.CharField(max_length=400, blank=True, null=True)
+    details = models.TextField(blank=True, null=True)
+    tour_rules = models.TextField(blank=True, null=True)
+    required_documents = models.TextField(blank=True, null=True)
+    tour_services = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='tour/', null=True, blank=True)
 
     def __str__(self):
@@ -197,7 +198,6 @@ class CityBanner(models.Model):
 
     def __str__(self):
         return self.title
-
 
 # class Tour(models.Model):
 # name = models.CharField(max_length=255)

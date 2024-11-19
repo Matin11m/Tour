@@ -125,14 +125,12 @@
 # #             return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
 
 from rest_framework import viewsets
-from .models import UserProfile, Province, City, Category, Tour, Trip, Favorite, Comment, Passenger, Order, \
+from .models import UserProfile, City, Category, Tour, Trip, Favorite, Comment, Passenger, Order, \
     Transaction, Refund, Banner, FirstBanner, CityBanner
-from .serializers import UserProfileSerializer, ProvinceSerializer, CitiesSerializer, CategorySerializer, \
+from .serializers import UserProfileSerializer, CitiesSerializer, CategorySerializer, \
     TourSerializer, TripSerializer, FavoritesSerializer, CommentsSerializer, PassengersSerializer, OrderSerializer, \
     TransactionsSerializer, RefundSerializer, BannerSerializer
-from django.utils.decorators import method_decorator
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
+
 from Tour.filters import TourFilter, CommentFilter, UserFilter
 
 
@@ -142,10 +140,10 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     filterset_class = UserFilter
 
 
-class ProvinceViewSet(viewsets.ModelViewSet):
-    queryset = Province.objects.all()  # اصلاح نام مدل به Province
-    serializer_class = ProvinceSerializer  # اصلاح نام سریالایزر به ProvinceSerializer
-
+# class ProvinceViewSet(viewsets.ModelViewSet):
+#     queryset = Province.objects.all()  # اصلاح نام مدل به Province
+#     serializer_class = ProvinceSerializer  # اصلاح نام سریالایزر به ProvinceSerializer
+#
 
 class CitiesViewSet(viewsets.ModelViewSet):
     queryset = City.objects.all()
