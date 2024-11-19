@@ -87,9 +87,9 @@ class UserProfileAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'first_name', 'last_name', 'national_id')
 
 
-@admin.register(Province)
-class ProvinceAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+# @admin.register(Province)
+# class ProvinceAdmin(admin.ModelAdmin):
+#     list_display = ('name',)
 
 
 @admin.register(City)
