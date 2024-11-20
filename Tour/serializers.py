@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)  # نمایش اطلاعات کاربر به صورت تودرتو
+    user = UserSerializer(read_only=True)
 
     class Meta:
         model = UserProfile
@@ -49,9 +49,16 @@ class CategorySimpleSerializer(serializers.ModelSerializer):
         fields = ['id', 'title']
 
 
+class TripSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Trip
+        fields = '__all__'
+
+
 class TourSerializer(serializers.ModelSerializer):
     category = CategorySimpleSerializer(read_only=True)
     city = CitiesSerializer(read_only=True)
+    trip = TripSimpleSerializer(read_only=True)
 
     class Meta:
         model = Tour
@@ -59,7 +66,7 @@ class TourSerializer(serializers.ModelSerializer):
 
 
 class TripSerializer(serializers.ModelSerializer):
-    tour = TourSerializer(read_only=True)  # نمایش تور مرتبط
+    tour = TourSerializer(read_only=True)
 
     class Meta:
         model = Trip
@@ -67,8 +74,8 @@ class TripSerializer(serializers.ModelSerializer):
 
 
 class FavoritesSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)  # نمایش اطلاعات کاربر مرتبط
-    tour = TourSerializer(read_only=True)  # نمایش تور مورد علاقه
+    user = UserSerializer(read_only=True)
+    tour = TourSerializer(read_only=True)
 
     class Meta:
         model = Favorite
@@ -76,8 +83,8 @@ class FavoritesSerializer(serializers.ModelSerializer):
 
 
 class CommentsSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)  # نمایش اطلاعات کاربر
-    tour = TourSerializer(read_only=True)  # نمایش تور مرتبط
+    user = UserSerializer(read_only=True)
+    tour = TourSerializer(read_only=True)
 
     class Meta:
         model = Comment
@@ -85,7 +92,7 @@ class CommentsSerializer(serializers.ModelSerializer):
 
 
 class PassengersSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)  # نمایش کاربر مرتبط
+    user = UserSerializer(read_only=True)
 
     class Meta:
         model = Passenger
@@ -93,9 +100,9 @@ class PassengersSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    passenger = PassengersSerializer(read_only=True)  # نمایش اطلاعات مسافر
-    user = UserSerializer(read_only=True)  # نمایش اطلاعات کاربر
-    trip = TripSerializer(read_only=True)  # نمایش جزئیات سفر
+    passenger = PassengersSerializer(read_only=True)
+    user = UserSerializer(read_only=True)
+    trip = TripSerializer(read_only=True)
 
     class Meta:
         model = Order
@@ -103,8 +110,8 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 class TransactionsSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)  # نمایش کاربر مرتبط
-    order = OrderSerializer(read_only=True)  # نمایش اطلاعات سفارش
+    user = UserSerializer(read_only=True)
+    order = OrderSerializer(read_only=True)
 
     class Meta:
         model = Transaction
@@ -112,8 +119,8 @@ class TransactionsSerializer(serializers.ModelSerializer):
 
 
 class RefundSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)  # نمایش کاربر مرتبط
-    order = OrderSerializer(read_only=True)  # نمایش سفارش مرتبط
+    user = UserSerializer(read_only=True)
+    order = OrderSerializer(read_only=True)
 
     class Meta:
         model = Refund
