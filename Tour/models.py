@@ -64,18 +64,13 @@ class Tour(models.Model):
         return self.title
 
 
-# class TourImage(models.Model):
-#     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='tour_images')
-#     image = models.ImageField(upload_to='tour_images/', blank=True, null=True)
-#
-#     def __str__(self):
-#         return self.tour.title
 class TourImage(models.Model):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='tour_images')
     image = models.ImageField(upload_to='tour_images/', blank=True, null=True)
 
     def __str__(self):
-        return f"Image for Tour: {self.tour.title}"
+        return self.tour.title
+
 
 class TourReport(models.Model):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='reports')
