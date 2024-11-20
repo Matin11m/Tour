@@ -69,7 +69,7 @@ class TourImage(models.Model):
     image = models.ImageField(upload_to='tour_images/', blank=True, null=True)
 
     def __str__(self):
-        return self.tour
+        return self.tour.title
 
 
 class TourReport(models.Model):
