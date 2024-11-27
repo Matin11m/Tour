@@ -38,4 +38,6 @@ router.register(r'first_banners', views.FirstBannerViewSet)
 router.register(r'city_banners', views.CityBannerViewSet)
 urlpatterns = [
     path('', include(router.urls)),
+    path('send-sms/', views.send_sms),
+    path('verify-code/', views.verify_code),
 ]
