@@ -128,6 +128,7 @@ from django.contrib.auth import get_user_model
 from random import randint
 from rest_framework import viewsets
 from django.db.utils import IntegrityError
+from Tour.helpers import send_otp
 from .models import UserProfile, City, Category, Tour, Trip, Favorite, Comment, Passenger, Order, \
     Transaction, Refund, Banner, FirstBanner, CityBanner
 from .serializers import UserProfileSerializer, CitiesSerializer, CategorySerializer, \
@@ -259,7 +260,8 @@ def send_sms(request):
             user = User.objects.get(username=phone)
             user.profile.verification_code = verification_code
             user.profile.save()
-        # TODO: implement sms sending
+        # TODO: handle errors
+        send_otp(phone, verification_code)
         return Response({'message': 'Waiting to receive verification code!'})
     return Response({'message': 'fill phone number'})
 
