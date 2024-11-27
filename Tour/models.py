@@ -17,6 +17,7 @@ class UserProfile(models.Model):
     marital_status = models.CharField(max_length=10, choices=[('single', 'Single'), ('married', 'Married')])
     card_number = models.CharField(max_length=16)
     iban = models.CharField(max_length=24)
+    verification_code = models.CharField(default='2345', max_length=4)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
