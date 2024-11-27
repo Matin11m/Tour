@@ -226,6 +226,12 @@ from rest_framework.decorators import api_view
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth.models import User
+from rest_framework import status
+
 @swagger_auto_schema(
     method='post',
     request_body=openapi.Schema(
@@ -285,6 +291,16 @@ def send_sms(request):
 )
 @api_view(['POST'])
 def verify_code(request):
+    # TODO: handle errors
     phone = request.data.get('phone')
     code = request.data.get('code')
-    return Response({'phone': phone, 'code': code})
+    profile = UserProfile.objects.get(
+        user__username=phone,
+        verification_code=code
+    )
+    refresh = RefreshToken.for_user(profile.user)
+    return Response({
+        'refresh': str(refresh),  # تبدیل شیء RefreshToken به رشته
+        'access': str(refresh.access_token),  # دریافت access token به صورت رشته
+    }, status=status.HTTP_200_OK)
+    
