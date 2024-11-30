@@ -46,13 +46,18 @@ class CategorySimpleSerializer(serializers.ModelSerializer):
 
 
 class TripSerializer(serializers.ModelSerializer):
+    tour_title = serializers.SerializerMethodField()
+
     class Meta:
         model = Trip
         fields = [
-            'id', 'tour', 'price', 'discount_price', 'capacity',
+            'id', 'tour_title', 'price', 'discount_price', 'capacity',
             'duration', 'stay', 'trip_type', 'start_date',
             'end_date', 'meal'
         ]
+
+    def get_tour_title(self, obj):
+        return obj.tour.title
 
 
 class TourImageSerializer(serializers.ModelSerializer):
