@@ -1,6 +1,8 @@
 from rest_framework import serializers
+from unicodedata import category
+
 from .models import UserProfile, City, Category, Tour, Trip, Favorite, Comment, Passenger, Order, \
-    Transaction, Refund, Banner, FirstBanner, CityBanner
+    Transaction, Refund, Banner, FirstBanner, CityBanner, TourImage, TourReport
 from django.contrib.auth.models import User
 
 
@@ -15,15 +17,15 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = '__all__'
+        fields = [
+            'user', 'first_name', 'last_name', 'phone_number', 'phone_number_emergency', 'national_id',
+            'birth_date', 'gender', 'marital_status', 'card_number', 'iban']
 
 
 class CitiesSerializer(serializers.ModelSerializer):
-
-
     class Meta:
         model = City
-        fields = '__all__'
+        fields = ['name']
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -43,20 +45,41 @@ class CategorySimpleSerializer(serializers.ModelSerializer):
         fields = ['id', 'title']
 
 
-class TripSerializer:
+class TripSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trip
-        fields = '__all__'
+        fields = [
+            'id', 'tour', 'price', 'discount_price', 'capacity',
+            'duration', 'stay', 'trip_type', 'start_date',
+            'end_date', 'meal'
+        ]
+
+
+class TourImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TourImage
+        fields = ['id', 'image']
+
+
+class TourReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TourReport
+        fields = ['id', 'day', 'report', 'image']
 
 
 class TourSerializer(serializers.ModelSerializer):
     category = CategorySimpleSerializer(read_only=True)
     city = CitiesSerializer(read_only=True)
     trip = TripSerializer
+    tour_images = TourImageSerializer(many=True, read_only=True)
+    reports = TourReportSerializer(many=True, read_only=True)
 
     class Meta:
         model = Tour
-        fields = '__all__'
+        fields = [
+            'id', 'category', 'city', 'title', 'description', 'stay',
+            'details', 'tour_rules', 'required_documents',
+            'tour_services', 'image']
 
 
 class FavoritesSerializer(serializers.ModelSerializer):
@@ -65,7 +88,7 @@ class FavoritesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Favorite
-        fields = '__all__'
+        fields = ['id', 'user', 'tour']
 
 
 class CommentsSerializer(serializers.ModelSerializer):
@@ -74,7 +97,7 @@ class CommentsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = '__all__'
+        fields = ['id', 'text', 'user', 'tour', 'score', 'visibility']
 
 
 class PassengersSerializer(serializers.ModelSerializer):
@@ -82,7 +105,7 @@ class PassengersSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Passenger
-        fields = '__all__'
+        fields = ['id', 'user', 'first_name', 'last_name', 'national_id', 'birth_date', 'gender']
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -92,7 +115,8 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = '__all__'
+        fields = ['id', 'passenger', 'user', 'trip', 'price', 'adults_number', 'children_number', 'order_status',
+                  'payment_status', 'refund_status']
 
 
 class TransactionsSerializer(serializers.ModelSerializer):
@@ -101,7 +125,7 @@ class TransactionsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transaction
-        fields = '__all__'
+        fields = ['id', 'user', 'order', 'amount', 'transaction_details', 'status']
 
 
 class RefundSerializer(serializers.ModelSerializer):
@@ -110,22 +134,22 @@ class RefundSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Refund
-        fields = '__all__'
+        fields = ['id', 'user', 'order', 'text', 'refund_amount', 'status']
 
 
 class BannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Banner
-        fields = '__all__'
+        fields = ['id', 'title', 'image', 'link']
 
 
 class FirstBannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = FirstBanner
-        fields = '__all__'
+        fields = ['id', 'title', 'image', 'category']
 
 
 class CityBannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = CityBanner
-        fields = '__all__'
+        fields = ['title', 'image', 'city']
