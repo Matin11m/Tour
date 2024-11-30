@@ -1,5 +1,4 @@
 from django_filters import rest_framework as filters
-from unicodedata import category
 
 from Tour.models import Tour, Comment, UserProfile
 

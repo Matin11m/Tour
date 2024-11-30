@@ -18,12 +18,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-# class ProvinceSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Province
-#         fields = '__all__'
-
-
 class CitiesSerializer(serializers.ModelSerializer):
     # province = ProvinceSerializer(read_only=True)
 
@@ -49,7 +43,7 @@ class CategorySimpleSerializer(serializers.ModelSerializer):
         fields = ['id', 'title']
 
 
-class TripSimpleSerializer(serializers.ModelSerializer):
+class TripSerializer:
     class Meta:
         model = Trip
         fields = '__all__'
@@ -58,18 +52,10 @@ class TripSimpleSerializer(serializers.ModelSerializer):
 class TourSerializer(serializers.ModelSerializer):
     category = CategorySimpleSerializer(read_only=True)
     city = CitiesSerializer(read_only=True)
-    trip = TripSimpleSerializer(read_only=True)
+    trip = TripSerializer
 
     class Meta:
         model = Tour
-        fields = '__all__'
-
-
-class TripSerializer(serializers.ModelSerializer):
-    tour = TourSerializer(read_only=True)
-
-    class Meta:
-        model = Trip
         fields = '__all__'
 
 
@@ -102,7 +88,7 @@ class PassengersSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     passenger = PassengersSerializer(read_only=True)
     user = UserSerializer(read_only=True)
-    trip = TripSerializer(read_only=True)
+    trip = TripSerializer
 
     class Meta:
         model = Order
