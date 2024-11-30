@@ -5,8 +5,7 @@ from .views import UserProfileViewSet, CitiesViewSet, CategoryViewSet, TourViewS
     BannerViewSet, FirstBannerViewSet, CityBannerViewSet
 
 router = DefaultRouter()
-router.register(r'userprofiles', UserProfileViewSet)
-# router.register(r'provinces', ProvinceViewSet)
+router.register(r'userprofile', UserProfileViewSet)
 router.register(r'cities', CitiesViewSet)
 router.register(r'categories', CategoryViewSet)
 router.register(r'tours', TourViewSet)
