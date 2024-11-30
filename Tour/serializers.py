@@ -19,7 +19,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class CitiesSerializer(serializers.ModelSerializer):
-    # province = ProvinceSerializer(read_only=True)
+
 
     class Meta:
         model = City
