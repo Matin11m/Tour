@@ -1,4 +1,134 @@
+# from rest_framework import viewsets
+# from rest_framework.decorators import action
+# from rest_framework.permissions import IsAuthenticated
+#
+# from .models import Tour, Category
+# from .serializers import TourSerializer, CategorySerializer, BuyFormSerializer, FavoriteSerializer, \
+#     ReservationSerializer
+# from rest_framework.response import Response
+# from rest_framework import status
+# from django.contrib.auth.models import User
+# from rest_framework.views import APIView
+# from kavenegar import KavenegarAPI
+# import random
+# # from .serializers import UserSerializer
+#
+#
+# class TourViewSet(viewsets.ModelViewSet):
+#     queryset = Tour.objects.all()
+#     serializer_class = TourSerializer
+#
+#     def get_serializer_context(self):
+#         context = super(TourViewSet, self).get_serializer_context()
+#         context['request'] = self.request
+#         return context
+#
+#     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+#     def toggle_favorite(self, request, pk=None):
+#         tour = self.get_object()
+#         user = request.user
+#
+#         favorite, created = Favorite.objects.get_or_create(user=user, tour=tour)
+#
+#         if created:
+#             return Response({'message': 'Tour added to favorites'}, status=status.HTTP_201_CREATED)
+#         else:
+#             favorite.delete()
+#             return Response({'message': 'Tour removed from favorites'}, status=status.HTTP_200_OK)
+#
+#
+# class CategoryViewSet(viewsets.ModelViewSet):
+#     queryset = Category.objects.all()
+#     serializer_class = CategorySerializer
+#
+#
+# class BuyFormViewSet(viewsets.ModelViewSet):
+#     queryset = BuyForm.objects.all()
+#     serializer_class = BuyFormSerializer
+#
+#     # permission_classes = [IsAuthenticated]
+#
+#     def perform_create(self, serializer):
+#         serializer.save(user=self.request.user)
+#
+#
+# class FavoriteViewSet(viewsets.ModelViewSet):
+#     queryset = Favorite.objects.all()
+#     serializer_class = FavoriteSerializer
+#
+#     def get_queryset(self):
+#         return Favorite.objects.filter(user=self.request.user)
+#
+#     def perform_create(self, serializer):
+#         serializer.save(user=self.request.user)
+#
+#
+# class ReservationViewSet(viewsets.ModelViewSet):
+#     queryset = Reservation.objects.all()
+#     serializer_class = ReservationSerializer
+#
+#     # permission_classes = [IsAuthenticated]
+#
+#     def get_queryset(self):
+#         return Reservation.objects.filter(user=self.request.user)
+#
+#     def perform_create(self, serializer):
+#         serializer.save(user=self.request.user)
+#
+#
+# #
+# #
+# #
+# # KAVEHNEGAR_API_KEY = '4B62615166304E675971316967436E47616B4E47433439385772663746455671634D323775554C2B4A63593D'
+#
+#
+# # class RegisterViewSet(viewsets.ViewSet):
+# #     def create(self, request):
+# #         serializer = UserSerializer(data=request.data)
+# #         if serializer.is_valid():
+# #             user = serializer.save()
+# #
+# #
+# #             verification_code = str(random.randint(100000, 999999))
+# #
+# #
+# #             mobile_number = serializer.validated_data['profile']['mobile_number']
+# #             try:
+# #                 api = KavenegarAPI(KAVEHNEGAR_API_KEY)
+# #                 params = {
+# #                     'receptor': mobile_number,
+# #                     'token': verification_code,
+# #                     'template': 'YourTemplateName',
+# #                     'type': 'sms',
+# #                 }
+# #                 api.verify_lookup(params)
+# #             except Exception as e:
+# #                 return Response({"error": "SMS service failed."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+# #
+# #             return Response({"message": "Verification code sent to mobile number."}, status=status.HTTP_201_CREATED)
+# #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# #
+# #
+# # class LoginViewSet(viewsets.ViewSet):
+# #     def create(self, request):
+# #         mobile_number = request.data.get('mobile_number')
+# #         password = request.data.get('password')
+# #
+# #         try:
+# #             profile = Profile.objects.get(mobile_number=mobile_number)
+# #             user = profile.user
+# #             if user.check_password(password):
+# #                 return Response({"message": "Login successful."}, status=status.HTTP_200_OK)
+# #             else:
+# #                 return Response({"error": "Incorrect password."}, status=status.HTTP_400_BAD_REQUEST)
+# #         except Profile.DoesNotExist:
+# #             return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+from django.contrib.auth import get_user_model
+from random import randint
 from rest_framework import viewsets
+from django.db.utils import IntegrityError
+from Tour.helpers import send_otp
 from .models import UserProfile, City, Category, Tour, Trip, Favorite, Comment, Passenger, Order, \
     Transaction, Refund, Banner, FirstBanner, CityBanner
 from .serializers import UserProfileSerializer, CitiesSerializer, CategorySerializer, \
@@ -8,11 +138,19 @@ from .serializers import UserProfileSerializer, CitiesSerializer, CategorySerial
 from Tour.filters import TourFilter, CommentFilter, UserFilter
 
 
+User = get_user_model()
+
+
 class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
     filterset_class = UserFilter
 
+
+# class ProvinceViewSet(viewsets.ModelViewSet):
+#     queryset = Province.objects.all()  # اصلاح نام مدل به Province
+#     serializer_class = ProvinceSerializer  # اصلاح نام سریالایزر به ProvinceSerializer
+#
 
 class CitiesViewSet(viewsets.ModelViewSet):
     queryset = City.objects.all()
@@ -79,3 +217,90 @@ class FirstBannerViewSet(viewsets.ModelViewSet):
 class CityBannerViewSet(viewsets.ModelViewSet):
     queryset = CityBanner.objects.all()
     serializer_class = BannerSerializer
+
+
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth.models import User
+from rest_framework import status
+
+@swagger_auto_schema(
+    method='post',
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'phone': openapi.Schema(type=openapi.TYPE_STRING, description='Phone number'),
+        },
+        required=['phone'],
+    ),
+    responses={200: openapi.Response('Successful Response', openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'message': openapi.Schema(type=openapi.TYPE_STRING, description='Response message'),
+        },
+    ))}
+)
+@api_view(['POST'])
+def send_sms(request):
+    phone = request.data.get('phone')
+    if phone and request.user.is_anonymous:
+        verification_code_number = randint(1000, 9999)
+        verification_code = str(verification_code_number)
+        user = None
+        try:
+            user = User.objects.create_user(username=phone)
+            UserProfile.objects.create(
+                user=user,
+                phone_number=phone,
+                verification_code=verification_code
+            )
+        except IntegrityError:
+            user = User.objects.get(username=phone)
+            user.profile.verification_code = verification_code
+            user.profile.save()
+        # TODO: handle errors
+        send_otp(phone, verification_code)
+        return Response({'message': 'Waiting to receive verification code!'})
+    return Response({'message': 'fill phone number'})
+
+
+@swagger_auto_schema(
+    method='post',
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'phone': openapi.Schema(type=openapi.TYPE_STRING, description='Phone number'),
+            'code': openapi.Schema(type=openapi.TYPE_STRING, description='Verification code'),
+        },
+        required=['phone', 'code'],
+    ),
+    responses={200: openapi.Response('Successful Response', openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'message': openapi.Schema(type=openapi.TYPE_STRING, description='Response message'),
+        },
+    ))}
+)
+@api_view(['POST'])
+def verify_code(request):
+    # TODO: handle errors
+    phone = request.data.get('phone')
+    code = request.data.get('code')
+    profile = UserProfile.objects.get(
+        user__username=phone,
+        verification_code=code
+    )
+    refresh = RefreshToken.for_user(profile.user)
+    return Response({
+        'refresh': str(refresh),  # تبدیل شیء RefreshToken به رشته
+        'access': str(refresh.access_token),  # دریافت access token به صورت رشته
+    }, status=status.HTTP_200_OK)
+    
