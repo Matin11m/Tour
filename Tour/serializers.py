@@ -75,7 +75,7 @@ class TourReportSerializer(serializers.ModelSerializer):
 class TourSerializer(serializers.ModelSerializer):
     category = CategorySimpleSerializer(read_only=True)
     city = CitiesSerializer(read_only=True)
-    trip = TripSerializer
+    trip = TripSerializer(read_only=True)
     tour_images = TourImageSerializer(many=True, read_only=True)
     reports = TourReportSerializer(many=True, read_only=True)
 
