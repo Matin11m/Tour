@@ -36,8 +36,11 @@ router.register(r'refunds', views.RefundViewSet)
 router.register(r'banners', views.BannerViewSet)
 router.register(r'first_banners', views.FirstBannerViewSet)
 router.register(r'city_banners', views.CityBannerViewSet)
+# router.register(r'send-sms', views.SendSmsViewSet)
+#
+# router.register(r'verify-code', views.VerifyCodeViewSet)
+
 urlpatterns = [
     path('', include(router.urls)),
-    path('send-sms/', views.send_sms),
-    path('verify-code/', views.verify_code),
- ]
+
+]

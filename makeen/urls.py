@@ -28,6 +28,8 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
+from Tour.views import send_sms, verify_code
+
 # schema_view = get_schema_view(
 #     openapi.Info(
 #         title="Snippets API",
@@ -47,6 +49,9 @@ urlpatterns = [
 
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+    path('api/send-sms/', send_sms.as_view(), name='send_sms'),
+    path('api/verify-code/', verify_code.as_view(), name='verify_code'),
 
     # path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     # path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
