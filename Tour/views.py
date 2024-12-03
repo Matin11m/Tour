@@ -303,4 +303,3 @@ def verify_code(request):
         'refresh': str(refresh),  # تبدیل شیء RefreshToken به رشته
         'access': str(refresh.access_token),  # دریافت access token به صورت رشته
     }, status=status.HTTP_200_OK)
-    

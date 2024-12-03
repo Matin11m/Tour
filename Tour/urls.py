@@ -40,4 +40,4 @@ urlpatterns = [
     path('', include(router.urls)),
     path('send-sms/', views.send_sms),
     path('verify-code/', views.verify_code),
-]
+ ]
