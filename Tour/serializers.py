@@ -84,7 +84,7 @@ class TourSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'category', 'city', 'title', 'description', 'stay',
             'details', 'tour_rules', 'required_documents',
-            'tour_services', 'image']
+            'tour_services', 'reports', 'image']
 
 
 class FavoritesSerializer(serializers.ModelSerializer):
