@@ -58,12 +58,12 @@ class Command(BaseCommand):
             'تبریز': ['تبریز', 'مراغه', 'مقدم']
         }
 
-        # for province_name in provinces:
-        #     province = Province.objects.create(name=province_name)
-        #     for city_name in cities[province_name]:
-        #         City.objects.create(name=city_name, province=province)
+        # for province_name, cities_list in cities.items():
+        #     # نیازی به ایجاد مدل Province نیست
+        #     for city_name in cities_list:
+        #         City.objects.create(name=city_name)
+
         for province_name, cities_list in cities.items():
-            # نیازی به ایجاد مدل Province نیست
             for city_name in cities_list:
                 City.objects.create(name=city_name)
 
