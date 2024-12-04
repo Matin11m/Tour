@@ -244,8 +244,7 @@ class Command(BaseCommand):
                 title=fake.company(),
                 image=None,  # برای تست، می‌توانید مسیر فایل‌های واقعی را جایگزین کنید.
                 link=fake.url(),
-                start_date=fake.date_this_year(),
-                end_date=fake.date_this_year()
+
             )
 
     def create_first_banners(self, fake, num):
