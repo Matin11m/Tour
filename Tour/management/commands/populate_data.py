@@ -295,6 +295,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         fake = Faker('fa_IR')  # زبان فارسی
+        City.objects.filter(province__isnull=True).delete()
 
         # پاکسازی داده‌های قبلی
         self.clear_old_data()
