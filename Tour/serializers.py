@@ -69,7 +69,7 @@ class TourImageSerializer(serializers.ModelSerializer):
 class TourReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = TourReport
-        fields = ['id', 'day', 'report', 'image']
+        fields = ['id', 'day', 'report', 'image',]
 
 
 class TourSerializer(serializers.ModelSerializer):
@@ -82,9 +82,9 @@ class TourSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tour
         fields = [
-            'id', 'category', 'city', 'title', 'description', 'stay',
+            'id','category', 'city', 'title', 'description', 'stay',
             'details', 'tour_rules', 'required_documents',
-            'tour_services', 'reports', 'image']
+            'tour_services', 'reports', 'image', 'tour_images','trip']
 
 
 class FavoritesSerializer(serializers.ModelSerializer):
