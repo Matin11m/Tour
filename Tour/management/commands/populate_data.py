@@ -3,7 +3,7 @@ import random
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from faker import Faker
-from Tour.models import UserProfile, Province, City, Category, Tour, Trip, Order, Transaction, Refund, Comment, \
+from Tour.models import UserProfile, City, Category, Tour, Trip, Order, Transaction, Refund, Comment, \
     Favorite, CityBanner, FirstBanner, Banner, Passenger
 
 
@@ -35,7 +35,6 @@ class Command(BaseCommand):
         # پاکسازی داده‌ها از جداول مختلف
         UserProfile.objects.all().delete()
         User.objects.all().delete()
-        Province.objects.all().delete()
         City.objects.all().delete()
         Category.objects.all().delete()
         Tour.objects.all().delete()
@@ -59,10 +58,14 @@ class Command(BaseCommand):
             'تبریز': ['تبریز', 'مراغه', 'مقدم']
         }
 
-        for province_name in provinces:
-            province = Province.objects.create(name=province_name)
-            for city_name in cities[province_name]:
-                City.objects.create(name=city_name, province=province)
+        # for province_name in provinces:
+        #     province = Province.objects.create(name=province_name)
+        #     for city_name in cities[province_name]:
+        #         City.objects.create(name=city_name, province=province)
+        for province_name, cities_list in cities.items():
+            # نیازی به ایجاد مدل Province نیست
+            for city_name in cities_list:
+                City.objects.create(name=city_name)
 
     def create_categories(self, fake, num):
         categories = ['تورهای داخلی', 'تورهای خارجی', 'تورهای ویژه', 'تورهای طبیعت گردی']
