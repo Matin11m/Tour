@@ -58,12 +58,7 @@ class Command(BaseCommand):
             'تبریز': ['تبریز', 'مراغه', 'مقدم']
         }
 
-        # for province_name, cities_list in cities.items():
-        #     # نیازی به ایجاد مدل Province نیست
-        #     for city_name in cities_list:
-        #         City.objects.create(name=city_name)
-
-        for province_name, cities_list in cities.items():
+        for cities_list in cities.values():
             for city_name in cities_list:
                 City.objects.create(name=city_name)
 
