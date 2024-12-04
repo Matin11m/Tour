@@ -334,6 +334,12 @@ class Command(BaseCommand):
         Banner.objects.all().delete()
         Passenger.objects.all().delete()
 
+    # def create_cities(self, fake, num):
+    #     # تعریف لیستی از نام‌های شهرها
+    #     cities = ['تهران', 'اصفهان', 'شیراز', 'مشهد', 'تبریز']
+    #     for city_name in cities:
+    #         City.objects.create(name=city_name)
+
     def create_cities(self, fake, num):
         # تعریف لیستی از نام‌های شهرها
         cities = ['تهران', 'اصفهان', 'شیراز', 'مشهد', 'تبریز']
