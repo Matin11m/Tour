@@ -156,15 +156,15 @@ class RefundSerializer(serializers.ModelSerializer):
         model = Refund
         fields = ['id', 'user', 'order', 'text', 'refund_amount', 'status', 'iban', 'card_number']
 
-        def get_card_number(self, obj):
-            if obj.user and hasattr(obj.user, 'profile'):
-                return obj.user.profile.card_number
-            return None
+    def get_card_number(self, obj):
+        if obj.user and hasattr(obj.user, 'profile'):
+            return obj.user.profile.card_number
+        return None
 
-        def get_iban(self, obj):
-            if obj.user and hasattr(obj.user, 'profile'):
-                return obj.user.profile.iban
-            return None
+    def get_iban(self, obj):
+        if obj.user and hasattr(obj.user, 'profile'):
+            return obj.user.profile.iban
+        return None
 
 
 class BannerSerializer(serializers.ModelSerializer):
