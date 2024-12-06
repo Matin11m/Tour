@@ -69,7 +69,7 @@ class TourImageSerializer(serializers.ModelSerializer):
 class TourReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = TourReport
-        fields = ['id', 'day', 'report', 'image',]
+        fields = ['id', 'day', 'report', 'image', ]
 
 
 class TourSerializer(serializers.ModelSerializer):
@@ -82,9 +82,9 @@ class TourSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tour
         fields = [
-            'id','category', 'city', 'title', 'description', 'stay',
+            'id', 'category', 'city', 'title', 'description', 'stay',
             'details', 'tour_rules', 'required_documents',
-            'tour_services', 'reports', 'image', 'tour_images','trip']
+            'tour_services', 'reports', 'image', 'tour_images', 'trip']
 
 
 class FavoritesSerializer(serializers.ModelSerializer):
@@ -116,30 +116,55 @@ class PassengersSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     passenger = PassengersSerializer(read_only=True)
     user = UserSerializer(read_only=True)
-    trip = TripSerializer
+    trip = serializers.SerializerMethodField()
+    trip_duration = serializers.SerializerMethodField()
 
     class Meta:
         model = Order
-        fields = ['id', 'passenger', 'user', 'trip', 'price', 'adults_number', 'children_number', 'order_status',
-                  'payment_status', 'refund_status']
+        fields = ['passenger', 'user', 'trip', 'price', 'adults_number', 'children_number', 'order_status',
+                  'payment_status', 'refund_status', 'trip_duration']
+
+    def get_trip(self, obj):
+        return obj.trip.tour.title if obj.trip and obj.trip.tour else None
+
+    def get_trip_duration(self, obj):
+        return obj.trip.duration if obj.trip else None
 
 
 class TransactionsSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     order = OrderSerializer(read_only=True)
+    trip_start_date = serializers.SerializerMethodField()
 
     class Meta:
         model = Transaction
-        fields = ['id', 'user', 'order', 'amount', 'transaction_details', 'status']
+        fields = ['id', 'user', 'order', 'trip_start_date', 'transaction_details', 'status']
+
+    def get_trip_start_date(self, obj):
+        if obj.order and obj.order.trip:
+            return obj.order.trip.start_date
+        return None
 
 
 class RefundSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     order = OrderSerializer(read_only=True)
+    card_number = serializers.SerializerMethodField()
+    iban = serializers.SerializerMethodField()
 
     class Meta:
         model = Refund
-        fields = ['id', 'user', 'order', 'text', 'refund_amount', 'status']
+        fields = ['id', 'user', 'order', 'text', 'refund_amount', 'status', 'iban', 'card_number']
+
+        def get_card_number(self, obj):
+            if obj.user and hasattr(obj.user, 'profile'):
+                return obj.user.profile.card_number
+            return None
+
+        def get_iban(self, obj):
+            if obj.user and hasattr(obj.user, 'profile'):
+                return obj.user.profile.iban
+            return None
 
 
 class BannerSerializer(serializers.ModelSerializer):
