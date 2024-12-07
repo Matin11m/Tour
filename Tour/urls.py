@@ -22,7 +22,5 @@ router.register(r'city_banners', views.CityBannerViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    # path('send_sms/', views.send_sms, name='send_sms'),
-    # path('verify_code/', views.verify_code, name='verify_code'),
 
 ]
