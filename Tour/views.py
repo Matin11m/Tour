@@ -243,22 +243,22 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from Tour.models import UserProfile
 
-@swagger_auto_schema(
-    method='post',
-    request_body=openapi.Schema(
-        type=openapi.TYPE_OBJECT,
-        properties={
-            'phone': openapi.Schema(type=openapi.TYPE_STRING, description='Phone number'),
-        },
-        required=['phone'],
-    ),
-    responses={200: openapi.Response('Successful Response', openapi.Schema(
-        type=openapi.TYPE_OBJECT,
-        properties={
-            'message': openapi.Schema(type=openapi.TYPE_STRING, description='Response message'),
-        },
-    ))}
-)
+# @swagger_auto_schema(
+#     method='post',
+#     request_body=openapi.Schema(
+#         type=openapi.TYPE_OBJECT,
+#         properties={
+#             'phone': openapi.Schema(type=openapi.TYPE_STRING, description='Phone number'),
+#         },
+#         required=['phone'],
+#     ),
+#     responses={200: openapi.Response('Successful Response', openapi.Schema(
+#         type=openapi.TYPE_OBJECT,
+#         properties={
+#             'message': openapi.Schema(type=openapi.TYPE_STRING, description='Response message'),
+#         },
+#     ))}
+# )
 @api_view(['POST'])
 def send_sms(request):
     phone = request.data.get('phone')
@@ -283,23 +283,23 @@ def send_sms(request):
     return Response({'message': 'fill phone number'})
 
 
-@swagger_auto_schema(
-    method='post',
-    request_body=openapi.Schema(
-        type=openapi.TYPE_OBJECT,
-        properties={
-            'phone': openapi.Schema(type=openapi.TYPE_STRING, description='Phone number'),
-            'code': openapi.Schema(type=openapi.TYPE_STRING, description='Verification code'),
-        },
-        required=['phone', 'code'],
-    ),
-    responses={200: openapi.Response('Successful Response', openapi.Schema(
-        type=openapi.TYPE_OBJECT,
-        properties={
-            'message': openapi.Schema(type=openapi.TYPE_STRING, description='Response message'),
-        },
-    ))}
-)
+# @swagger_auto_schema(
+#     method='post',
+#     request_body=openapi.Schema(
+#         type=openapi.TYPE_OBJECT,
+#         properties={
+#             'phone': openapi.Schema(type=openapi.TYPE_STRING, description='Phone number'),
+#             'code': openapi.Schema(type=openapi.TYPE_STRING, description='Verification code'),
+#         },
+#         required=['phone', 'code'],
+#     ),
+#     responses={200: openapi.Response('Successful Response', openapi.Schema(
+#         type=openapi.TYPE_OBJECT,
+#         properties={
+#             'message': openapi.Schema(type=openapi.TYPE_STRING, description='Response message'),
+#         },
+#     ))}
+# )
 @api_view(['POST'])
 def verify_code(request):
     # TODO: handle errors
