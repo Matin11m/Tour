@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from unicodedata import category
 
 from .models import UserProfile, City, Category, Tour, Trip, Favorite, Comment, Passenger, Order, \
@@ -105,12 +106,24 @@ class CommentsSerializer(serializers.ModelSerializer):
         fields = ['id', 'text', 'user', 'tour', 'score', 'visibility']
 
 
-class PassengersSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
+# class PassengersSerializer(serializers.ModelSerializer):
+#     user = UserSerializer()
+#
+#     class Meta:
+#         model = Passenger
+#         fields = ['id', 'user', 'first_name', 'last_name', 'national_id', 'birth_date', 'gender']
 
+class PassengersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Passenger
         fields = ['id', 'user', 'first_name', 'last_name', 'national_id', 'birth_date', 'gender']
+        extra_kwargs = {'user': {'read_only': True}}
+
+    def create(self, validated_data):
+        request = self.context.get('request')
+        validated_data['user'] = request.user
+        return super().create(validated_data)
+
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -174,9 +187,16 @@ class BannerSerializer(serializers.ModelSerializer):
 
 
 class FirstBannerSerializer(serializers.ModelSerializer):
+    category = CategorySerializer()
+
     class Meta:
         model = FirstBanner
         fields = ['id', 'title', 'image', 'category']
+
+    def validate(self, data):
+        if FirstBanner.objects.count() >= 3 and self.instance is None:
+            raise ValidationError("فقط می‌توانید ۳ بنر اضافه کنید.")
+        return data
 
 
 class CityBannerSerializer(serializers.ModelSerializer):
