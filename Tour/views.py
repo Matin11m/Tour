@@ -1,7 +1,9 @@
 from django.contrib.auth import get_user_model
 from random import randint
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from django.db.utils import IntegrityError
+from rest_framework.permissions import IsAuthenticated
+
 from Tour.helpers import send_otp
 from .models import UserProfile, City, Category, Tour, Trip, Favorite, Comment, Passenger, Order, \
     Transaction, Refund, Banner, FirstBanner, CityBanner
@@ -60,6 +62,14 @@ class CommentsViewSet(viewsets.ModelViewSet):
 class PassengersViewSet(viewsets.ModelViewSet):
     queryset = Passenger.objects.all()
     serializer_class = PassengersSerializer
+
+    # permission_classes = [IsAuthenticated]
+    def perform_create(self, serializer):
+        # بررسی می‌کنیم که آیا کاربر وارد شده است یا خیر
+        user = self.request.user if self.request.user.is_authenticated else None
+        serializer.save(user=user)
+
+
 # class PassengersViewSet(viewsets.ModelViewSet):
 #     serializer_class = PassengersSerializer
 #

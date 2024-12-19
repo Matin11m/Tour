@@ -112,7 +112,7 @@ class Comment(models.Model):
 
 
 class Passenger(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='passengers')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='passengers',null=True,blank=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     national_id = models.CharField(max_length=10)
