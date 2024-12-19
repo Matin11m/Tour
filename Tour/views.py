@@ -57,14 +57,14 @@ class CommentsViewSet(viewsets.ModelViewSet):
     filterset_class = CommentFilter
 
 
-# class PassengersViewSet(viewsets.ModelViewSet):
-#     queryset = Passenger.objects.all()
-#     serializer_class = PassengersSerializer
 class PassengersViewSet(viewsets.ModelViewSet):
+    queryset = Passenger.objects.all()
     serializer_class = PassengersSerializer
-
-    def get_queryset(self):
-        return Passenger.objects.filter(user=self.request.user)
+# class PassengersViewSet(viewsets.ModelViewSet):
+#     serializer_class = PassengersSerializer
+#
+#     def get_queryset(self):
+#         return Passenger.objects.filter(user=self.request.user)
 
 
 class OrderViewSet(viewsets.ModelViewSet):
